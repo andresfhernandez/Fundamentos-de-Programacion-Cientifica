@@ -1,0 +1,76 @@
+import numpy as np 
+import matplotlib.pyplot as ppt
+import matplotlib.image as img
+import PIL
+
+imagen = img.imread("C:/Users/GNOMON4/Desktop/Maestria/Semestre I/Fundamentos De Programacion Cientifica/Ingenieria/lp3.jpg") #cargar imagen
+
+imagen2D = np.array((imagen[:,:,0])) # pasar la imagen a dos dimensiones
+ppt.imshow(imagen) #mostrar la imagen
+ppt.title("Original")
+ppt.figure() #crear una nueva figura
+ppt.imshow(imagen2D, cmap = ppt.cm.gray) # mostrar la imagen en escala de grises
+
+print (np.shape(imagen2D)) #imprime las dimensiones de imagen2D
+
+Largo = np.full((15,3),0)
+Alto = np.full((3,15),0)
+pequeña = np.full((3,3),0)
+
+m,n = np.shape(imagen2D)
+
+bordes_horizontales = np.full((m,n),0)
+bordes_verticales = np.full((m,n),0)
+
+offset_ancho = 7
+offset_alto = 1
+
+print(m,n)
+print(pequeña)
+
+for row in range (offset_alto,m):
+    for col in range (offset_ancho,n-offset_ancho+1):
+        W_ancho = imagen2D[row-offset_alto:row+offset_alto, col-offset_ancho:col+offset_ancho]
+        W_pequeña = imagen2D[row-offset_alto:row+offset_alto, col-offset_alto:col+offset_alto]
+        media1 = np.mean(W_ancho)
+        media2 = np.mean(W_pequeña)
+        result = media1/media2
+        if result > 1.30:
+            bordes_horizontales [row,col] = 1
+        else:
+            bordes_horizontales [row,col] = 0
+
+ppt.imshow(bordes_horizontales, cmap=ppt.cm.gray)
+ppt.title("Horizonal")
+ppt.figure()
+
+
+for row in range (offset_ancho,m):
+    for col in range (offset_alto,n-offset_alto+1):
+        W_ancho = imagen2D[row-offset_ancho:row+offset_ancho, col-offset_alto:col+offset_alto]
+        W_pequeña = imagen2D[row-offset_ancho:row+offset_alto, col-offset_ancho:col+offset_ancho]
+        media1 = np.mean(W_ancho)
+        media2 = np.mean(W_pequeña)
+        result = media1/media2
+        if result > 1.30:
+            bordes_verticales [row,col] = 1
+        else:
+            bordes_verticales [row,col] = 0
+
+ppt.imshow(bordes_verticales, cmap=ppt.cm.gray)
+ppt.title("Vertical")
+ppt.figure()
+
+#bordes_horizontales= np.logical_not(bordes_horizontales)
+#bordes_verticales = np.logical_not(bordes_verticales)
+
+nuevo = np.logical_or(bordes_horizontales,bordes_verticales)
+ppt.imshow(nuevo)
+nuevo = np.logical_not (nuevo)
+ppt.imshow(nuevo,cmap=ppt.cm.gray)
+
+ppt.title("Suma")
+ppt.figure()
+
+
+ppt.show()
