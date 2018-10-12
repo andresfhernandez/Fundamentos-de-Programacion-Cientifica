@@ -1,0 +1,75 @@
+import numpy as np
+import pandas as pd
+
+
+# 1. Cargue en un dataframe el dataset contenido en el archivo CSV /parks.csv Convierta a la columna 'Park Code' en el indice de su dataframe
+datos = pd.read_csv("C:/Users/GNOMON4/Desktop/Maestria/Semestre I/Fundamentos De Programacion Cientifica/lab3_mafp-master/parks.csv", index_col = ["Park Code"])
+print (datos)
+
+# 2. Visualice las primeras 12 filas del dataframe
+print ("\nPrimeras 12 filas")
+primeras_doce_filas = (datos.iloc[0:12])
+print (primeras_doce_filas)
+
+# 3. Visualice las filas 15 a 20 del dataframe
+print ("\nFilas 15 a la 20")
+filas_15_al_20 = (datos.iloc[15:21])
+print (filas_15_al_20)
+
+# 4. Obtenga el promedio de la columna 'Acres' para las entradas 15 a 20 del dataframe
+print ("\nPromedio de la columna Acres")
+promedio_acres = (np.mean(datos["Acres"]))
+print (promedio_acres)
+
+# 5. Obtenga el nombre del parque indexado por el codigo 'GRSA'
+print ("\nNombre del parque indexado por codigo GRSA")
+parque_por_GRSA = (datos.loc["GRSA"]["Park Name"])
+print (parque_por_GRSA)
+
+# 6. Obtenga el total de 'Acres' que suman los parques con codigos GRSA, YELL y BADL
+print ("\nTotal de acres que suman GRSA,  YELL y BADL")
+Acres_de_GRSA_YELL_BADL = (np.sum(datos.loc[["GRSA","YELL","BADL"]]["Acres"]))
+print (Acres_de_GRSA_YELL_BADL)
+
+# 7. Obtenga el numero de parques cuyo valor en 'Acres' es menor a 10000
+print ("\nNumero de parques cuyo valor de Acres es menor a 10000")
+parques_con_acres_menor_a_1000 = (len (datos[datos["Acres"] < 10000]))
+print (parques_con_acres_menor_a_1000)
+
+# 8. Obtenga el numero de parques cuya 'Longitude' es menor a -90
+print ("\nNumero de parques cuya longitude es menor a - 90")
+parques_con_longitude_menor_a_90 = (len (datos[datos["Longitude"] < -90]))
+print (parques_con_longitude_menor_a_90)
+
+# 9. Obtenga el percentil 75 para la columna 'Acres'
+print ("\nPercentil 75 para Acres")
+percentil_75_de_Acres = (datos["Acres"].quantile(.75))
+print (percentil_75_de_Acres)
+
+# 10. Obtenga las entradas del dataframe cuyos 'Acres' sean mayores al percentil 75 y ordenelos en orden ascendente por 'Acres'
+print ("\nAcres mayores al parecentil 75")
+Acres_mayores_al_parecentil_75 = (datos[datos["Acres"] > datos["Acres"].quantile(.75)].sort_values(by="Acres"))
+print (Acres_mayores_al_parecentil_75)
+
+# 11. Obtenga el nombre del parque cuyos 'Acres' son mayores y casi iguales a los del parque Yellowstone National Park
+print ("\nAcres mayores y casi iguales a los de Yellowstone")
+#AcresOrdenados = datos.sort_values(by="Acres")
+AcresYELL = datos[datos["Park Name"] == "Yellowstone National Park"].iloc[0]["Acres"]
+Acres_mayores_y_casi_iguales_a_los_de_Yellowstone = (datos[datos["Acres"] > AcresYELL].sort_values(by="Acres").iloc[0]["Park Name"])
+print (Acres_mayores_y_casi_iguales_a_los_de_Yellowstone)
+
+# 12. Obtenga el nombre del parque no perteneciente a Alaska que tenga el mayor numero de 'Acres'
+print ("\nParque no perteneciente a Alaska que tiene mayor numero de Acres")
+Parque_no_perteneciente_a_Alaska_que_tiene_mayor_numero_de_Acres = (datos[datos["State"] != "AK"].sort_values(by="Acres").iloc[-1]["Park Name"])
+print (Parque_no_perteneciente_a_Alaska_que_tiene_mayor_numero_de_Acres)
+
+# 13. Obtenga el numero de parques cuyo territorio esta en mas de un estado a la vez
+print ("\nNumero de parques cuyo territorio esta en mas de un estado a la vez")
+parques_en_mas_de_un_territorio = (len(datos[datos["State"].apply(lambda states : len(states.split(",")) > 1)]))
+print (parques_en_mas_de_un_territorio)
+
+# 14. obtenga el total de 'Acres' de los parques que se encuentran en los estados a los que pertecene el parque Yellowstone National Park
+print ("\nTotal de 'Acres' de los parques que se encuentran en los estados a los que pertecene el parque Yellowstone National Park")
+yellowstonestates = datos[datos["Park Name"] == "Yellowstone National Park"].iloc[0]["State"].split(",")
+Acres_en_estados_del_YELL = (np.sum(datos[datos['State'].apply(lambda state : state in yellowstonestates)]['Acres']))
+print (Acres_en_estados_del_YELL)
