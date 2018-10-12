@@ -1,0 +1,19 @@
+def analiceString(chain) :
+    izquierdo = derecho = 0
+    contador_pregunta = 0
+    for char in chain :
+        if char.isnumeric() :
+            izquierdo = derecho
+            derecho = int(char)
+            if izquierdo + derecho == 10 and contador_pregunta != 3:
+                return False
+            contador_pregunta = 0
+        elif char == '?' :
+            contador_pregunta = contador_pregunta + 1
+    return True
+
+while True :
+    chain = ''
+    while len(chain) < 1 :
+        chain = input('Ingrese una cadena de caracteres: ')
+    print('Cumple: %s' % ( 'SI' if analiceString(chain) else 'No'))
