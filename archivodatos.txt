@@ -1,0 +1,85 @@
+Host: google.com
+IP: 216.58.222.206
+Server: gws
+Content-Encoding: gzip
+Content-Type: text/html; charset=ISO-8859-1
+
+Host: youtube.com
+IP: 216.58.222.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: youtube.com
+IP: 216.58.222.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: youtube.com
+IP: 216.58.222.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: gmail.com
+IP: 172.217.30.197
+Server: GSE
+Content-Encoding: unknown
+Content-Type: text/html; charset=UTF-8
+
+Host: youtube.com
+IP: 216.58.222.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: gmail.com
+IP: 172.217.30.197
+Server: GSE
+Content-Encoding: unknown
+Content-Type: text/html; charset=UTF-8
+
+
+Host: youtube.com
+IP: 172.217.30.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: youtube.com
+IP: 216.58.222.206
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: gmail.com
+IP: 172.217.30.197
+Server: GSE
+Content-Encoding: unknown
+Content-Type: text/html; charset=UTF-8
+
+Host: facebook.com
+IP: 31.13.67.35
+Server: unknown
+Content-Encoding: gzip
+Content-Type: text/html; charset="utf-8"
+
+Host: youtube.com
+IP: 216.58.222.238
+Server: YouTube Frontend Proxy
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+
+Host: gmail.com
+IP: 216.58.222.197
+Server: GSE
+Content-Encoding: unknown
+Content-Type: text/html; charset=UTF-8
+
+Host: facebook.com
+IP: 157.240.6.35
+Server: unknown
+Content-Encoding: unknown
+Content-Type: text/html
+
