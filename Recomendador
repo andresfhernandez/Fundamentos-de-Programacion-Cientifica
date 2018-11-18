@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+
+
+#En primer lugar cargue los datasets "ratings.csv" y "movies.csv" en dataframes
+ratings = pd.read_csv('ratings.csv')
+movies = pd.read_csv('movies.csv')
+
+#Combinar Dataframes
+dataset = movies.merge(ratings, left_on='movieId', right_on='movieId', how='inner')
+
+#Rating promedio
+rating = dataset.groupby('movieId')['rating'].mean().sort_values(ascending=False)
+
+#populares
+popular_movies = dataset.groupby('movieId')['rating'].size().sort_values(ascending=False)
+
+#dataframe calificacion rpmedio
+ratings1 = pd.concat([rating, popular_movies], axis=1)
+ratings1.columns = ['promedio_rating', 'numero_califs']
+
+#estadistica de peliculas con mas calificacion
+EstadisticaPeliculas = ratings1.groupby('numero_califs')['promedio_rating'].mean()
+
+ratings1['populares'] = ratings1['promedio_rating'] * np.log(ratings1['numero_califs'])
+peliculasPopulares = ratings1.merge(movies, left_on='movieId', right_on='movieId', how='outer').sort_values(by='populares', ascending=False)
+print('More Relevant', peliculasPopulares.iloc[0]['movieId'])
+
+#calificaciones por usuario
+ratingUsuario = dataset.pivot(index = 'userId', columns = 'movieId', values='rating')
+
+#rating mas popular 
+rating_mas_popular = ratingUsuario[peliculasPopulares.iloc[0]['movieId']]
+
+#correlacion entre todas las peliculas del dataframe y la pelicula mas popular y mejor calificada del dataframe (pista: corrwith)
+correlacion = ratingUsuario.corrwith(rating_mas_popular, axis=0)
+
+#Implemente un nuevo dataframe con la ultima lista (la de las correlaciones) y a la columna llamela 'Correlaciones'
+correlacion_dataset = pd.DataFrame({'Correlaciones': correlacion, 'movieId': correlacion.index})
+
+#Elimine de esta lista todos los valores NaN
+correlacion_dataset.dropna(inplace = True)
+
+#A este ultimo dataframe agreguele la columna del dataframe donde se registraron la cantidad de calificaciones por pelicula ('numero_califs') (pista: join)
+correlacion_dataset = correlacion_dataset.merge(ratings1, left_on='movieId', right_on='movieId', how='inner')
+
+#Visualice las recomendaciones como las peliculas con un numero de calificaciones mayores al percentil 60 del numero de calificaciones por pelicula ('numero_califs')
+#y ordene el dataframe en orden descendente de la columna 'Correlaciones'
+RECOMENDADAS = correlacion_dataset[ correlacion_dataset['numero_califs'] > correlacion_dataset['numero_califs'].quantile(0.6) ].sort_values(by='Correlaciones', ascending=False)
+print(RECOMENDADAS)
