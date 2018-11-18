@@ -9,8 +9,11 @@ def ingreso(funcionDemanda, precio):
     return np.sum(funcionDemanda*precio)
 
 
-t = np.arange(8, 20)
-A, B, D = 200, 10, 10
+t = np.arange(5, 20)
+A = 200
+B = 10
+D = 10
+
 
 def objetivo(X):
     precio = X[0]
