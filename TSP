@@ -1,0 +1,59 @@
+import numpy as np
+
+# Matrices de distancias entre nodos para las 3 instancias del problema
+
+#Instancia 1 TSP: 5 nodos
+A=[[0,8,4,9,9],[8,0,6,7,10],[4,6,0,5,6],[9,7,5,0,4],[9,10,6,4,0]]
+
+#Instancia 2 TSP: 7 nodos
+B=[[0,12,8,29,18,25,22],[12,0,14,40,30,26,10],[8,14,0,27,21,17,23],[29,40,27,0,18,32,50],[18,30,21,18,0,35,40],[25,26,17,32,35,0,30],[22,10,23,50,40,30,0]]
+
+#Instancia 3 TSP: 12 nodos
+C=[[0,12,8,29,18,25,22,17,15,32,32,32],[12,0,14,40,30,26,10,23,26,40,23,20],[8,14,0,27,21,17,23,10,14,26,37,33],[29,40,27,0,18,32,50,22,14,14,62,59],
+           [18,30,21,18,0,35,40,24,10,29,48,50],[25,26,17,32,35,0,30,11,25,23,47,37],[22,10,23,50,40,30,0,31,36,48,18,10],[17,23,10,22,24,11,31,0,14,17,46,40],
+		   [15,26,14,14,10,25,36,14,0,20,47,46],[32,40,26,14,29,23,48,17,20,0,63,57],[32,23,37,62,48,47,18,46,47,63,0,17],[32,20,33,59,50,37,10,40,46,57,17,0]]
+
+def funcioncercano(distancias):
+  distancia = np.array(distancias)
+  viaje = np.zeros(len(distancia), dtype=int)
+  no_visitados = np.ones(len(viaje), dtype=bool)
+  no_visitados[0] = False
+  for i in range(1, len(viaje)):
+    cercano = np.min(distancia[viaje[i-1]][no_visitados])
+    viaje[i] = np.where(np.logical_and(distancia[viaje[i-1]] == cercano, no_visitados))[0][0]
+    no_visitados[viaje[i]] = False
+  return viaje
+
+
+def funcion_Distancia_del_tour(viaje, distancias):
+  p = [distancias[viaje[i]][viaje[i+1]] for i in range(len(viaje) - 1)]
+  return sum(p) + distancias[viaje[-1]][viaje[0]]
+
+
+def funcion3(viaje, distancias):
+  change = True
+  while change:
+    change = False
+    for i in range(len(viaje)):
+      for j in range(len(viaje)):
+        if i == j : continue
+        swap = np.copy(viaje)
+        swap[i], swap[j] = swap[j], swap[i]
+        if funcion_Distancia_del_tour(swap, distancias) < funcion_Distancia_del_tour(viaje, distancias):
+          viaje = swap
+          change = True
+  return viaje
+
+# TSP #######
+viaje1 = funcioncercano(A)
+D = funcion3(viaje1, A)
+
+viaje2 = funcioncercano(B)
+E = funcion3(viaje2, B)
+
+viaje3 = funcioncercano(C)
+F = funcion3(viaje3, C)
+
+print('Resultado 1: ', D)
+print('Resultado 2: ', E)
+print('Resultado 3: ', F)
