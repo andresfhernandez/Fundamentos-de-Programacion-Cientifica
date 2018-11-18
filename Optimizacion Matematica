@@ -1,0 +1,28 @@
+import numpy as np
+from scipy.optimize import minimize
+
+def funcionDemanda(precio, t, A, B, D):
+    return (1/B)*(A - precio * (D + t)/D)
+
+
+def ingreso(funcionDemanda, precio):
+    return np.sum(funcionDemanda*precio)
+
+
+t = np.arange(8, 20)
+A, B, D = 200, 10, 10
+
+def objetivo(X):
+    precio = X[0]
+    return - ingreso(funcionDemanda(precio, t, A, B, D), precio)
+
+def precioPositivo(X):
+    precio = X[0]
+    return precio
+
+resultado = minimize(objetivo, [580000], method='SLSQP', constraints=[{'type':'ineq', 'fun':precioPositivo}])
+
+if resultado['success'] :
+    print('Precio ideal: ', resultado['x'][0])
+else :
+    print('No se encontro un resultado optimo')
